@@ -1,8 +1,14 @@
+const { Coordinate } = require("../Coordinate")
+
 const columns = 10
 const rows = 10
 const startLetter = 65
 
 const Battlefield = () => {
+  const handleShoot = () => {
+    return 'miss';
+  };
+
   return (
     <table className="table-auto">
       <thead>
@@ -18,7 +24,13 @@ const Battlefield = () => {
           <tr key={x.toString()}>
             <th scope="row">{x + 1}</th>
             {[...Array(columns)].map((__, y) => (
-              <td key={`${x.toString()}${y.toString()}`} className="w-16 h-16"> </td>
+              <td key={`${x.toString()}${y.toString()}`} className="w-14 h-14">
+                <Coordinate
+                  x={x}
+                  y={y}
+                  handleShoot={handleShoot}
+                />
+              </td>
             ))}
           </tr>
         ))}
