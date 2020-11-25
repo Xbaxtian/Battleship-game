@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import PropTypes from 'prop-types';
+import { useState } from 'react'
+import PropTypes from 'prop-types'
 
 const shootStyles = {
   hidden: 'bg-gray-500',
@@ -8,11 +8,11 @@ const shootStyles = {
 };
 
 const Coordinate = ({ x, y, handleShoot }) => {
-  const [focus, setFocus] = useState('hidden');
+  const [focus, setFocus] = useState('hidden')
 
   const clicked = () => {
     const result = handleShoot(x, y);
-    setFocus(result);
+    setFocus(result)
   };
 
   return (

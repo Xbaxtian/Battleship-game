@@ -5,14 +5,14 @@
     "jest": true
   },
   "extends": [
+    "airbnb",
+    "prettier",
     "eslint:recommended",
     "plugin:react/recommended",
     "plugin:import/errors",
     "plugin:import/warnings",
     "plugin:jsx-a11y/recommended",
-    "plugin:react-hooks/recommended",
-    "airbnb",
-    "prettier"
+    "plugin:react-hooks/recommended"
   ],
   "parser": "babel-eslint",
   "globals": {

@@ -8,6 +8,6 @@ function MyApp({ Component, pageProps }) {
 MyApp.propTypes = {
   pageProps: PropTypes.shape({}).isRequired,
   Component: PropTypes.elementType.isRequired,
-};
+}
 
 export default MyApp
