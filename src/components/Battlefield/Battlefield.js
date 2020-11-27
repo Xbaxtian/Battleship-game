@@ -25,20 +25,22 @@ const getInitialShips = () => [
   getShipBoilerplate('submarine'),
 ]
 
-const Battlefield = ({ handleTurns }) => {
+const Battlefield = ({ handleTurns, playable }) => {
   const [matrix, setMatrix] = useState(getInitialMatrix())
-  const [ships, setShips] = useState(getInitialShips())
 
-  const handleShoot = (x, y) => {
-    handleTurns()
+  const handleShoot = (x, y, shooted) => {
+    if(!playable)
+      return false;
+
+    handleTurns(shooted)
     return matrix[y][x] ? 'hit' : 'miss'
   };
 
   useEffect(() => {
     const matrixCopy = getInitialMatrix()
-    let newShips = [...ships]
+    const newShips = getInitialShips()
 
-    newShips = newShips.map(currentShip => {
+    newShips.map(currentShip => {
       let shipPositions = []
       let canBuild = false
 
@@ -57,7 +59,6 @@ const Battlefield = ({ handleTurns }) => {
     })
 
     setMatrix(matrixCopy)
-    setShips(newShips)
   }, [])
 
   return (
@@ -91,7 +92,8 @@ const Battlefield = ({ handleTurns }) => {
 }
 
 Battlefield.propTypes = {
-  handleTurns: PropTypes.func.isRequired
+  handleTurns: PropTypes.func.isRequired,
+  playable: PropTypes.bool.isRequired,
 }
 
 export default Battlefield

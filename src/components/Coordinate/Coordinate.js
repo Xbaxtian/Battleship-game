@@ -11,8 +11,9 @@ const Coordinate = ({ x, y, handleShoot, status }) => {
   const [focus, setFocus] = useState(status)
 
   const clicked = () => {
-    const result = handleShoot(x, y);
-    setFocus(result)
+    const result = handleShoot(x, y, focus !== 'hidden');
+    if (result)
+      setFocus(result)
   };
 
   useEffect(() => {
