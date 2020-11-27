@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
 
 const shootStyles = {
@@ -7,13 +7,17 @@ const shootStyles = {
   hit: 'bg-green-300',
 };
 
-const Coordinate = ({ x, y, handleShoot }) => {
-  const [focus, setFocus] = useState('hidden')
+const Coordinate = ({ x, y, handleShoot, status }) => {
+  const [focus, setFocus] = useState(status)
 
   const clicked = () => {
     const result = handleShoot(x, y);
     setFocus(result)
   };
+
+  useEffect(() => {
+    setFocus(status)
+  }, [status])
 
   return (
     <div
@@ -30,7 +34,11 @@ Coordinate.propTypes = {
   x: PropTypes.number.isRequired,
   y: PropTypes.number.isRequired,
   handleShoot: PropTypes.func.isRequired,
+  status: PropTypes.string,
 }
 
+Coordinate.defaultProps = {
+  status: 'hidden',
+}
 
 export default Coordinate
