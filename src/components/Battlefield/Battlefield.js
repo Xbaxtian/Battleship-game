@@ -25,7 +25,7 @@ const getInitialShips = () => [
   getShipBoilerplate('submarine'),
 ]
 
-const Battlefield = ({ handleTurns, playable }) => {
+const Battlefield = ({ handleTurns, playable, battleNumber }) => {
   const [matrix, setMatrix] = useState(getInitialMatrix())
 
   const handleShoot = (x, y, shooted) => {
@@ -37,7 +37,7 @@ const Battlefield = ({ handleTurns, playable }) => {
   };
 
   useEffect(() => {
-    const matrixCopy = getInitialMatrix()
+    const matrixCopy = getInitialMatrix().map(arr => [...arr])
     const newShips = getInitialShips()
 
     newShips.map(currentShip => {
@@ -52,14 +52,14 @@ const Battlefield = ({ handleTurns, playable }) => {
       const buildedShip = { ...currentShip, positions: shipPositions, status: 'operational' }
 
       shipPositions.forEach(position => {
-        matrixCopy[position.y][position.x] = position
+        matrixCopy[position.y][position.x] = 1
       })
 
       return buildedShip
     })
 
     setMatrix(matrixCopy)
-  }, [])
+  }, [battleNumber])
 
   return (
     <table className="table-auto">
@@ -76,8 +76,9 @@ const Battlefield = ({ handleTurns, playable }) => {
           <tr key={y.toString()}>
             <th scope="row" className="px-2">{y + 1}</th>
             {matrix[y].map((__, x) => (
-              <td key={`${x.toString()}${y.toString()}`} className="w-14 h-14">
+              <td key={`${y.toString()}${x.toString()}`} className="w-14 h-14">
                 <Coordinate
+                  key={`${battleNumber}-${y.toString()}.${x.toString()}`}
                   x={x}
                   y={y}
                   handleShoot={handleShoot}
@@ -94,6 +95,7 @@ const Battlefield = ({ handleTurns, playable }) => {
 Battlefield.propTypes = {
   handleTurns: PropTypes.func.isRequired,
   playable: PropTypes.bool.isRequired,
+  battleNumber: PropTypes.number.isRequired,
 }
 
 export default Battlefield
