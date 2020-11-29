@@ -1,7 +1,9 @@
-import { Game } from '../src/components'
+import { Configuration } from "../src/components";
 
 export default function Home() {
   return (
-    <Game />
+    <>
+      <Configuration />
+    </>
   )
 }

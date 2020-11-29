@@ -36,6 +36,7 @@
     "indent": "off",
     "react/no-unescaped-entities": "off",
     "no-trailing-spaces": "off",
+    "jsx-a11y/no-onchange": "off",
     // Allow jsx syntax inside .js files for Tests
     "react/jsx-filename-extension": [
       1,
