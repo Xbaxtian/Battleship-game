@@ -12,7 +12,7 @@ const Configuration = () => {
 
     router.push({
       pathname: '/game',
-      query: { turns }
+      query: { turns },
     })
   }
 

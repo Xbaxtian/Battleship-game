@@ -27,12 +27,15 @@ const getInitialShips = () => [
 
 const Battlefield = ({ handleTurns, playable, battleNumber }) => {
   const [matrix, setMatrix] = useState(getInitialMatrix())
+  const [hits, setHits] = useState(0);
 
   const handleShoot = (x, y, shooted) => {
     if(!playable)
       return false;
 
-    handleTurns(shooted)
+    const hitsCount = matrix[y][x] ? hits + 1 : hits
+    setHits(hitsCount)
+    handleTurns(shooted, hitsCount)
     return matrix[y][x] ? 'hit' : 'miss'
   };
 
@@ -59,6 +62,7 @@ const Battlefield = ({ handleTurns, playable, battleNumber }) => {
     })
 
     setMatrix(matrixCopy)
+    setHits(0)
   }, [battleNumber])
 
   return (

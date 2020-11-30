@@ -1,28 +1,43 @@
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
+import Image from 'next/image'
 import { Battlefield } from '../Battlefield'
 import { Label, Button } from '../ui'
+import GameOverModal from './GameOverModal'
 
 const Game = () => {
   const router = useRouter()
   const [turns, setTurns] = useState(0)
   const [gameOver, setGameOver] = useState(false)
   const [gameNumber, setGameNumber] = useState(1)
+  const [isDialogOpen, setIsDialogOpen] = useState(false)
+  const [won, setWon] = useState(false)
 
-  const handleTurns = (clicked) => {
+  const handleTurns = (clicked, hitsCount) => {
     if (clicked)
       return
 
     const turnsLeft = turns - 1
     setTurns(turnsLeft)
-    if (!turnsLeft)
+    if (!turnsLeft) {
       setGameOver(true)
+      setIsDialogOpen(true)
+    }
+
+    if (hitsCount === 20) {
+      setGameOver(true)
+      setWon(true)
+      setIsDialogOpen(true)
+    }
   }
 
   const resetGame = () => {
-    setTurns(30)
+    const configuredTurns = router.query.turns
+    setTurns(parseInt(configuredTurns, 10))
     setGameOver(false)
     setGameNumber(gameNumber + 1)
+    setWon(false)
+    setIsDialogOpen(false)
   }
 
   useEffect(() => {
@@ -85,6 +100,24 @@ const Game = () => {
           <Button label="Reset" onClick={resetGame} />
         </div>
       </div>
+      <GameOverModal isOpen={isDialogOpen}>
+        <div className="px-4 pt-5 pb-4 text-center">
+          <Image
+            src={won ? '/check.svg' : '/delete.svg'}
+            width={60}
+            height={60}
+          />
+          <h2 className={`${won ? 'text-green-600' : 'text-red-600'} text-2xl my-6`}>
+            You
+            {' '}
+            {won ? 'Won' : 'Lose'}
+            !!!
+          </h2>
+          <div className="sm:max-w-xs mx-auto">
+            <Button label="Play again" onClick={resetGame} />
+          </div>
+        </div>
+      </GameOverModal>
     </>
   )
 }
