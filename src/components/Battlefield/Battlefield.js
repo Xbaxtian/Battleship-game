@@ -25,7 +25,7 @@ const getInitialShips = () => [
   getShipBoilerplate('submarine'),
 ]
 
-const Battlefield = ({ handleTurns, playable, battleNumber }) => {
+const Battlefield = ({ handleTurns, playable, battleNumber, showShips }) => {
   const [matrix, setMatrix] = useState(getInitialMatrix())
   const [hits, setHits] = useState(0);
 
@@ -35,7 +35,7 @@ const Battlefield = ({ handleTurns, playable, battleNumber }) => {
 
     const hitsCount = matrix[y][x] ? hits + 1 : hits
     setHits(hitsCount)
-    handleTurns(shooted, hitsCount)
+    handleTurns(shooted, hitsCount, { x, y })
     return matrix[y][x] ? 'hit' : 'miss'
   };
 
@@ -79,13 +79,14 @@ const Battlefield = ({ handleTurns, playable, battleNumber }) => {
         {matrix.map((_, y) => (
           <tr key={y.toString()}>
             <th scope="row" className="px-2">{y + 1}</th>
-            {matrix[y].map((__, x) => (
+            {matrix[y].map((position, x) => (
               <td key={`${y.toString()}${x.toString()}`} className="w-14 h-14">
                 <Coordinate
                   key={`${battleNumber}-${y.toString()}.${x.toString()}`}
                   x={x}
                   y={y}
                   handleShoot={handleShoot}
+                  status={showShips && position ? 'owned' : 'hidden'}
                 />
               </td>
             ))}
@@ -100,6 +101,7 @@ Battlefield.propTypes = {
   handleTurns: PropTypes.func.isRequired,
   playable: PropTypes.bool.isRequired,
   battleNumber: PropTypes.number.isRequired,
+  showShips: PropTypes.bool.isRequired,
 }
 
 export default Battlefield

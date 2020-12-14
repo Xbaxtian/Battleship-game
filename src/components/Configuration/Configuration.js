@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { useRouter } from 'next/router'
+import Link from 'next/link'
 import { infinite, defaultLevels } from '../../constants'
 import { Button } from '../ui'
 
@@ -25,7 +26,7 @@ const Configuration = () => {
     <div className="container mx-auto px-4">
       <h1 className="my-6 text-4xl text-center font-bold">BattleShip Game</h1>
 
-      <form onSubmit={handleSubmit} className="mx-auto w-64">
+      <form onSubmit={handleSubmit} className="mx-auto w-72 p-4 border-gray-400 border-2">
         <label htmlFor="level" className="flex items-center justify-between mb-4">
           <span className="mr-2 w-20 inline-block">Deficulty</span>
           <select
@@ -52,8 +53,13 @@ const Configuration = () => {
           />
         </label>
 
-        <Button label="Play!" type="submit" />
+        <Button label="Singleplayer" type="submit" />
       </form>
+      <div className="mt-4 mx-auto w-72 p-4 border-gray-400 border-2">
+        <Link href="/multiplayer">
+          <a><Button label="Multiplayer" type="button" /></a>
+        </Link>
+      </div>
     </div>
   )
 }
