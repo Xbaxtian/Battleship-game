@@ -5,13 +5,14 @@ const shootStyles = {
   hidden: 'bg-gray-500',
   miss: 'bg-red-700',
   hit: 'bg-green-300',
+  owned: 'bg-blue-400',
 };
 
 const Coordinate = ({ x, y, handleShoot, status }) => {
   const [focus, setFocus] = useState(status)
 
   const clicked = () => {
-    const result = handleShoot(x, y, focus !== 'hidden');
+    const result = handleShoot(x, y, focus !== 'hidden' && focus !== 'owned');
     if (result)
       setFocus(result)
   };

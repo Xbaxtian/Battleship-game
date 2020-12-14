@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types'
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
 import Image from 'next/image'
@@ -5,7 +6,7 @@ import { Battlefield } from '../Battlefield'
 import { Label, Button } from '../ui'
 import GameOverModal from './GameOverModal'
 
-const Game = () => {
+const Game = ({ propTurns, isMultiplayer, standBy, handleTurnsCallback }) => {
   const router = useRouter()
   const [turns, setTurns] = useState(0)
   const [gameOver, setGameOver] = useState(false)
@@ -13,7 +14,7 @@ const Game = () => {
   const [isDialogOpen, setIsDialogOpen] = useState(false)
   const [won, setWon] = useState(false)
 
-  const handleTurns = (clicked, hitsCount) => {
+  const handleTurns = (clicked, hitsCount, position) => {
     if (clicked)
       return
 
@@ -29,10 +30,12 @@ const Game = () => {
       setWon(true)
       setIsDialogOpen(true)
     }
+
+    handleTurnsCallback(position, won)
   }
 
   const resetGame = () => {
-    const configuredTurns = router.query.turns
+    const configuredTurns = router.query.turns || propTurns
     setTurns(parseInt(configuredTurns, 10))
     setGameOver(false)
     setGameNumber(gameNumber + 1)
@@ -41,27 +44,26 @@ const Game = () => {
   }
 
   useEffect(() => {
-    const configuredTurns = router.query.turns
-
+    const configuredTurns = router.query.turns || propTurns
     if(!configuredTurns && !parseInt(configuredTurns, 10))
       router.push('/')
 
     
     setTurns(parseInt(configuredTurns, 10))
-  }, [router])
+  }, [])
 
   return (
     <>
       <h1 className="my-6 text-4xl text-center font-bold">Let's Play</h1>
       <div className="flex justify-center">
         <div className="mr-8">
-          <Battlefield handleTurns={handleTurns} playable={!gameOver} battleNumber={gameNumber} />
+          <Battlefield handleTurns={handleTurns} playable={!gameOver && !standBy} battleNumber={gameNumber} showShips={isMultiplayer} />
         </div>
         <div className="py-8">
           <div className="mb-4">
             <Label>
               <span>Turns:</span>
-              <span className="ml-2 text-2xl">{` ${turns}`}</span>
+              <span className="ml-2 text-2xl">{` ${router.query.turns ? turns : '--'}`}</span>
             </Label>
           </div>
 
@@ -120,6 +122,20 @@ const Game = () => {
       </GameOverModal>
     </>
   )
+}
+
+Game.propTypes = {
+  propTurns: PropTypes.number,
+  isMultiplayer: PropTypes.bool,
+  standBy: PropTypes.bool,
+  handleTurnsCallback: PropTypes.func,
+}
+
+Game.defaultProps = {
+  propTurns: 0,
+  isMultiplayer: false,
+  standBy: false,
+  handleTurnsCallback: () => {},
 }
 
 export default Game;
